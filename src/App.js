@@ -1,7 +1,8 @@
 import './App.css';
 import Navbar from "./components/Navbar";
 import TodoList from "./components/TodoList";
-
+import NewTodo from "./components/NewTodo";
+import TodoEdit from "./components/TodoEdit";
 import Home from "./components/Home";
 
 function App() {
