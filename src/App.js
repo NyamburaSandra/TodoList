@@ -1,6 +1,8 @@
 import './App.css';
 import Navbar from "./components/Navbar";
+import TodoList from "./components/TodoList";
 
+import Home from "./components/Home";
 
 function App() {
   let mTodos = [
