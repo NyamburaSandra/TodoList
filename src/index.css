@@ -43,3 +43,12 @@ code {
   width: 600px;
   margin: 5px auto;
 }
+button > a {
+  display: block;
+  text-decoration: none;
+  color: white;
+}
+
+button > a:hover {
+  color: white;
+}
