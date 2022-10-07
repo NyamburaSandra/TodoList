@@ -23,3 +23,23 @@ code {
   text-align: left;
   
 }
+.todo > input {
+  margin-right: 16px;
+}
+
+.todo:hover {
+  background-color: rgba(255, 255, 255, 0.59);
+}
+
+.todo > div {
+  margin-left: auto;
+}
+.todo > div > * {
+  cursor: pointer;
+  margin-left: 30px;
+}
+
+.new-todo {
+  width: 600px;
+  margin: 5px auto;
+}
