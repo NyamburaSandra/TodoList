@@ -17,7 +17,7 @@ function NewTodo({addTodo}) {
       <textarea placeholder={'Enter a new Todo'} onChange={(e) => setText(e.target.value)} className="form-control"
                 id="exampleFormControlTextarea1"
                 rows="3" value={text} />
-      
+      <button onClick={saveTodo} className={'btn btn-primary mt-2'}>Save</button>
     </div>
   );
 }
