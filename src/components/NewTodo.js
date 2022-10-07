@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 function NewTodo({addTodo}) {
   const [text, setText] = useState('')
-  
+  const navigate = useNavigate()
 
   const saveTodo = () => {
     addTodo(text)
