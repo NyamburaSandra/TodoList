@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base_url = 'http://localhost:3001/todos'
+const base_url = 'https://todo-sandra.herokuapp.com/todos'
 
 // get all todos,
 export const getAllTodos = async () => {
