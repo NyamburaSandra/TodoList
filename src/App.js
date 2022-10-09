@@ -1,7 +1,7 @@
 import './App.css';
 import Navbar from "./components/Navbar";
 import TodoList from "./components/TodoList";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import NewTodo from "./components/NewTodo";
 import TodoEdit from "./components/TodoEdit";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
@@ -11,10 +11,14 @@ import {v4 as uuidv4} from 'uuid';
 
 function App() {
   const [todos, setTodos] = useState([])
-
-  const memoizedCallback = async () => {
-    return await getAllTodos()
+  const getTodos = async () => {
+    const response = await getAllTodos()
+    setTodos(response)
   }
+  const memoizedCallback = useCallback(async () => {
+    return await getAllTodos()
+  }, [])
+
 
   useEffect(() => {
     memoizedCallback().then(r => setTodos(r))
@@ -34,17 +38,17 @@ function App() {
     }
 
     await addNewTodo(newTodo)
-    await memoizedCallback()
+    await getTodos()
   }
 
   const editTodo = async (editedTodo) => {
     await toggleTodo(editedTodo)
-    await memoizedCallback()
+    await getTodos()
   }
 
   const deleteTodo = async (id) => {
     await deleteTodoApi(id)
-    await memoizedCallback()
+    await getTodos()
   }
 
   const [todoEdit, setTodoEdit] = useState(todos[0])
