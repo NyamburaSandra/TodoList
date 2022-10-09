@@ -5,7 +5,7 @@ function TodoList({todos, toggleComplete, setTodoEdit, deleteTodo}) {
   return (
     <ul className="list-group">
       {todos.map(todo => (
-        <Todo deleteTodo={deleteTodo} todo={todo} toggleComplete={toggleComplete} setTodoEdit={setTodoEdit} />
+        <Todo key={todo.id} deleteTodo={deleteTodo} todo={todo} toggleComplete={toggleComplete} setTodoEdit={setTodoEdit} />
       ))}
     </ul>
   );

@@ -1,112 +1,50 @@
 import './App.css';
 import Navbar from "./components/Navbar";
 import TodoList from "./components/TodoList";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import NewTodo from "./components/NewTodo";
 import TodoEdit from "./components/TodoEdit";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./components/Home";
+import {addNewTodo, deleteTodoApi, getAllTodos, toggleTodo} from "./api";
+import {v4 as uuidv4} from 'uuid';
 
 function App() {
-  let mTodos = [
-    {
-    "userId": 1,
-    "id": 1,
-    "title": "delectus aut autem",
-    "completed": false
-  },
-    {
-      "userId": 1,
-      "id": 2,
-      "title": "quis ut nam facilis et officia qui",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 3,
-      "title": "fugiat veniam minus",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 4,
-      "title": "et porro tempora",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": 5,
-      "title": "laboriosam mollitia et enim quasi adipisci quia provident illum",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 6,
-      "title": "qui ullam ratione quibusdam voluptatem quia omnis",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 7,
-      "title": "illo expedita consequatur quia in",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 8,
-      "title": "quo adipisci enim quam ut ab",
-      "completed": true
-    },
-    {
-      "userId": 1,
-      "id": 9,
-      "title": "molestiae perspiciatis ipsa",
-      "completed": false
-    },
-    {
-      "userId": 1,
-      "id": 10,
-      "title": "illo est ratione doloremque quia maiores aut",
-      "completed": true
-    },]
+  const [todos, setTodos] = useState([])
 
-  const [todos, setTodos] = useState(mTodos)
-
-  const toggleComplete = (id) => {
-    setTodos((prevState) => {
-      const filteredTodo = prevState.filter(todo => todo.id === id)
-      const editedTodo = {...filteredTodo[0], completed: !filteredTodo[0].completed}
-
-      const newTodos = prevState.filter(todo => todo.id !== id)
-      const result = [...newTodos, editedTodo]
-      return result.sort((a, b) => a.id - b.id);
-    })
+  const memoizedCallback = async () => {
+    return await getAllTodos()
   }
 
-  const addTodo = (text) => {
+  useEffect(() => {
+    memoizedCallback().then(r => setTodos(r))
+  }, [memoizedCallback])
+
+  const toggleComplete = async (id) => {
+    const filteredTodo = todos.filter(todo => todo.id === id)
+    const editedTodo = {...filteredTodo[0], completed: !filteredTodo[0].completed}
+    await editTodo(editedTodo)
+  }
+
+  const addTodo = async (text) => {
     const newTodo = {
-      id: todos.length + 1,
+      id: uuidv4(),
       title: text,
       completed: false
     }
 
-    setTodos((prevState) => {
-      return [...prevState, newTodo]
-    })
+    await addNewTodo(newTodo)
+    await memoizedCallback()
   }
 
-  const editTodo = (editedTodo) => {
-    setTodos((prevState) => {
-      const existingTodos = prevState.filter(todo => todo.id !== editedTodo.id)
-      return [...existingTodos, editedTodo].sort((a, b) => a.id - b.id);
-    })
+  const editTodo = async (editedTodo) => {
+    await toggleTodo(editedTodo)
+    await memoizedCallback()
   }
 
-  const deleteTodo = (id) => {
-    setTodos(prevState => {
-      const remainingTodos = prevState.filter(todo => todo.id !== id)
-      return remainingTodos.sort((a, b) => a.id - b.id);
-    })
+  const deleteTodo = async (id) => {
+    await deleteTodoApi(id)
+    await memoizedCallback()
   }
 
   const [todoEdit, setTodoEdit] = useState(todos[0])
@@ -122,7 +60,8 @@ function App() {
       <Routes>
         <Route path={'/'} element={<Home />} />
         <Route path={'/todo-list'}
-               element={<TodoList deleteTodo={deleteTodo} setTodoEdit={setEdit} todos={todos} toggleComplete={toggleComplete} />} />
+               element={<TodoList deleteTodo={deleteTodo} setTodoEdit={setEdit} todos={todos}
+                                  toggleComplete={toggleComplete} />} />
         <Route path={'/new-todo'} element={<NewTodo addTodo={addTodo} />} />
         <Route path={'/edit-todo'} element={<TodoEdit editTodo={editTodo} todo={todoEdit} />} />
       </Routes>
