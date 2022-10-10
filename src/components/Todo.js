@@ -21,7 +21,7 @@ function Todo({todo, toggleComplete, setTodoEdit, deleteTodo}) {
       </label>
       <div>
         <AiFillEdit onClick={editTodo} />
-        <AiTwotoneDelete onClick={() => deleteTodo(todo.id)} />
+        <AiTwotoneDelete onClick={() => deleteTodo(todo.id)}/>
       </div>
     </li>
   );

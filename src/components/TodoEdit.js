@@ -17,7 +17,7 @@ function TodoEdit({todo, editTodo}) {
       <label htmlFor="exampleFormControlTextarea1" className="form-label">Edit Todo Title</label>
       <textarea placeholder={'Enter a new Todo'} onChange={(e) => setText(e.target.value)} className="form-control"
                 id="exampleFormControlTextarea1"
-                rows="2" value={text} />
+                rows="2" value={text}/>
       <button onClick={saveTodo} className={'btn btn-primary mt-2'}>Save Todo</button>
     </div>
   );
